@@ -450,6 +450,7 @@ tab_search, tab_viz, tab_tfidf, tab_about = st.tabs([
 # TAB 1: PENCARIAN
 # ══════════════════════════════════════════════════════════════════════════════
 with tab_search:
+    st.markdown('<div class="section-heading">🔍 Pencarian Ayat Al-Quran</div>', unsafe_allow_html=True)
     # ⚙️ PENGATURAN (Pindahan dari Sidebar)
     with st.expander("⚙️ Opsi & Filter Pencarian", expanded=False):
         c1, c2 = st.columns(2)
