@@ -31,8 +31,13 @@ html, body, [class*="css"] {
 
 /* Background */
 .stApp {
-    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e) !important;
     min-height: 100vh;
+}
+
+/* Global text color to light because of the dark background */
+.stApp, .stApp p, .stApp label, [data-testid="stMarkdownContainer"] p {
+    color: rgba(255,255,255,0.9) !important;
 }
 
 /* Hero banner */
@@ -138,34 +143,91 @@ html, body, [class*="css"] {
     transition: width 0.5s ease;
 }
 
-/* Sidebar */
+/* Sidebar override */
 section[data-testid="stSidebar"] {
     background: rgba(15, 12, 41, 0.95) !important;
     border-right: 1px solid rgba(212,175,55,0.2);
-    display: none; /* Sembunyikan sidebar sesuai permintaan */
-}
-section[data-testid="stSidebar"] .stSelectbox label,
-section[data-testid="stSidebar"] .stSlider label,
-section[data-testid="stSidebar"] .stNumberInput label,
-section[data-testid="stSidebar"] p,
-section[data-testid="stSidebar"] h1,
-section[data-testid="stSidebar"] h2,
-section[data-testid="stSidebar"] h3 {
-    color: rgba(255,255,255,0.85) !important;
+    display: none;
 }
 
-/* Input */
-.stTextInput > div > div > input, .stTextArea > div > textarea {
-    background: rgba(255,255,255,0.06) !important;
-    border: 1px solid rgba(212,175,55,0.35) !important;
-    color: white !important;
+/* Expander & Widgets - Comprehensive Dark Theme for Light Mode */
+[data-testid="stExpander"] {
+    background-color: transparent !important;
+    border: 1px solid rgba(212, 175, 55, 0.25) !important;
+    border-radius: 12px !important;
+    margin-bottom: 1rem !important;
+}
+
+/* Fix for ALL Expander Headers */
+[data-testid="stExpander"] summary {
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    color: #D4AF37 !important;
+    border-radius: 12px !important;
+}
+[data-testid="stExpander"] summary:hover {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+/* All Inputs & Selectboxes Container */
+div[data-baseweb="input"], 
+div[data-baseweb="base-input"], 
+div[data-baseweb="textarea"],
+div[data-baseweb="select"] > div {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    border: 1px solid rgba(212, 175, 55, 0.4) !important;
     border-radius: 10px !important;
-    font-family: 'Nunito', sans-serif !important;
 }
-.stTextInput > div > div > input:focus, .stTextArea > div > textarea:focus {
-    border-color: #D4AF37 !important;
-    box-shadow: 0 0 0 2px rgba(212,175,55,0.2) !important;
+
+/* Dropdown Menu (Popover List) */
+[data-baseweb="popover"] ul {
+    background-color: #16213e !important;
+    border: 1px solid #D4AF37 !important;
 }
+[data-baseweb="popover"] li {
+    background-color: transparent !important;
+    color: white !important;
+}
+[data-baseweb="popover"] li:hover {
+    background-color: rgba(212, 175, 55, 0.2) !important;
+}
+
+/* Dataframe / Table styling */
+[data-testid="stDataFrame"] {
+    background-color: #1a1a2e !important;
+    border-radius: 10px !important;
+    padding: 10px !important;
+}
+
+/* Force text visibility */
+div[data-testid="stTextInput"] input, 
+div[data-testid="stTextArea"] textarea, 
+div[data-testid="stNumberInput"] input,
+div[data-baseweb="select"] * {
+    color: white !important;
+    -webkit-text-fill-color: white !important;
+}
+
+/* Gold Labels for Widgets */
+label[data-testid="stWidgetLabel"], .stSlider label, .stSelectbox label {
+    color: #D4AF37 !important;
+    font-weight: 700 !important;
+}
+
+/* Fix placeholder visibility */
+::placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Fix for Browser Autofill / Recommendations turning white */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #0f0c29 inset !important;
+    -webkit-text-fill-color: white !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
 
 /* Button */
 .stButton > button {
@@ -510,8 +572,9 @@ with tab_viz:
     # Menggunakan key dinamis agar input ter-reset jika bahasa berubah
     v_query = st.text_input("Query untuk divisualisasi", placeholder=v_placeholder, key=f"v_query_{v_lang}")
     v_topn  = st.slider("Jumlah Ayat", 5, 20, 10, key="v_topn")
+    btn_viz = st.button("📊 Buat Visualisasi", use_container_width=True)
 
-    if st.button("📊 Buat Visualisasi", use_container_width=True):
+    if (btn_viz or v_query) and v_query.strip():
         if v_query.strip():
             with st.spinner("Menghitung..."):
                 hasil_v = cari_ayat(v_query.strip(), lang=v_lang, top_n=v_topn)
@@ -632,3 +695,12 @@ with tab_about:
     <b>5. Ranking:</b> Ayat dengan skor tertinggi ditampilkan sebagai hasil yang paling relevan.
     </div>
     """, unsafe_allow_html=True)
+#  DISABLE AUTOCOMPLETE (REKOMENDASI INPUT) 
+st.markdown('''
+<script>
+    var inputs = window.parent.document.querySelectorAll('input');
+    for (var i = 0; i < inputs.length; i++) {
+        inputs[i].setAttribute('autocomplete', 'off');
+    }
+</script>
+''', unsafe_allow_html=True)
