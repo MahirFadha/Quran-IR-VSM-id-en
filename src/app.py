@@ -657,8 +657,8 @@ with tab_tfidf:
             plt.tight_layout()
             st.pyplot(fig2)
 
-            with st.expander("📋 Lihat Tabel Lengkap"):
-                st.dataframe(df_tf.reset_index(drop=True), use_container_width=True, hide_index=True)
+            # with st.expander("📋 Lihat Tabel Lengkap"):
+            #     st.dataframe(df_tf.reset_index(drop=True), use_container_width=True, hide_index=True)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 4: TENTANG
