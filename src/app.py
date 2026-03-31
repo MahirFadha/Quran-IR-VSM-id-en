@@ -507,13 +507,13 @@ with tab_search:
                     </div>
                     """, unsafe_allow_html=True)
 
-                with st.expander("📋 Lihat sebagai Tabel"):
-                    display_df = hasil.copy()
-                    display_df['surah_name'] = display_df['surah'].map(SURAH_NAMES)
-                    st.dataframe(display_df[['surah', 'surah_name', 'ayat', 'teks', 'similarity']],
-                                 use_container_width=True, hide_index=True)
-        elif search_btn:
-            st.warning("⚠️ Masukkan kata kunci terlebih dahulu.")
+        #         with st.expander("📋 Lihat sebagai Tabel"):
+        #             display_df = hasil.copy()
+        #             display_df['surah_name'] = display_df['surah'].map(SURAH_NAMES)
+        #             st.dataframe(display_df[['surah', 'surah_name', 'ayat', 'teks', 'similarity']],
+        #                          use_container_width=True, hide_index=True)
+        # elif search_btn:
+        #     st.warning("⚠️ Masukkan kata kunci terlebih dahulu.")
 
     else:  # Cross-Language
         col_id, col_en = st.columns(2)
